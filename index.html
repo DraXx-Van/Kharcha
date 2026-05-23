@@ -275,20 +275,6 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
 </style>
 </head>
 <body>
-<button id="installBtn"
-style="
-display:none;
-position:fixed;
-top:16px;
-right:16px;
-z-index:999;
-padding:10px 16px;
-border:none;
-border-radius:10px;
-cursor:pointer;
-font-weight:600;">
-Install App
-</button>
   
 <div id="loader">
   <div class="loader-logo"><i class="ti ti-wallet"></i></div>
@@ -890,58 +876,57 @@ function render(){
   if(currentPage==='stats') renderStats();
 }
 
+<script>
+
 // INIT
 applyTheme(theme);
-document.getElementById('inp-date').value=new Date().toISOString().split('T')[0];
+
+document.getElementById('inp-date').value =
+new Date().toISOString().split('T')[0];
+
 if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-        navigator.serviceWorker
-            .register("./sw.js")
-            .then(() => console.log("SW registered"))
-            .catch(err => console.log(err));
+
+    window.addEventListener("load", async () => {
+
+        try {
+
+            const reg =
+            await navigator.serviceWorker.register("./sw.js");
+
+            console.log("SW Registered",reg);
+
+        } catch(err){
+
+            console.log("SW Error:",err);
+
+        }
+
     });
+
 }
 
 window.addEventListener('load',()=>{
-  setTimeout(()=>{
-    const l=document.getElementById('loader');
-    l.style.opacity='0';
-    setTimeout(()=>l.remove(),600);
-    render();
-  },1400);
+
+    setTimeout(()=>{
+
+        const l=document.getElementById('loader');
+
+        l.style.opacity='0';
+
+        setTimeout(()=>{
+
+            l.remove();
+
+        },600);
+
+        render();
+
+    },1400);
+
 });
+
 render();
-let deferredPrompt;
 
-window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault();
-
-    deferredPrompt = e;
-
-    document.getElementById("installBtn").style.display = "block";
-});
-
-document.getElementById("installBtn")
-.addEventListener("click", async ()=>{
-
-    if(!deferredPrompt) return;
-
-    deferredPrompt.prompt();
-
-    const result = await deferredPrompt.userChoice;
-
-    console.log(result.outcome);
-
-    deferredPrompt = null;
-
-    document.getElementById("installBtn").style.display="none";
-});
-
-window.addEventListener("appinstalled", ()=>{
-    document.getElementById("installBtn").style.display="none";
-
-    showToast("Kharcha installed","success");
-});
 </script>
 </body>
 </html>
