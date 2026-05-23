@@ -1,6 +1,7 @@
 {
   "name": "Kharcha — Expense Tracker",
   "short_name": "Kharcha",
+  "description": "Personal expense tracker that works offline",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
