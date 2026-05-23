@@ -869,15 +869,6 @@ function clearAll(){
   document.getElementById('confirm-overlay').classList.add('open');
 }
 
-function render(){
-  renderHeader();
-  if(currentPage==='home'){renderSummary();renderBudgetWarning();renderCats();renderRecent();}
-  if(currentPage==='history') renderHistory();
-  if(currentPage==='stats') renderStats();
-}
-
-<script>
-
 // INIT
 applyTheme(theme);
 
@@ -885,24 +876,19 @@ document.getElementById('inp-date').value =
 new Date().toISOString().split('T')[0];
 
 if ("serviceWorker" in navigator) {
-
     window.addEventListener("load", async () => {
-
         try {
 
-            const reg =
-            await navigator.serviceWorker.register("./sw.js");
+            const reg = await navigator.serviceWorker.register("./sw.js");
 
-            console.log("SW Registered",reg);
+            console.log("SW Registered:", reg);
 
         } catch(err){
 
-            console.log("SW Error:",err);
+            console.log("SW Error:", err);
 
         }
-
     });
-
 }
 
 window.addEventListener('load',()=>{
@@ -925,8 +911,28 @@ window.addEventListener('load',()=>{
 
 });
 
-render();
 
+function render(){
+
+    renderHeader();
+
+    if(currentPage==='home'){
+        renderSummary();
+        renderBudgetWarning();
+        renderCats();
+        renderRecent();
+    }
+
+    if(currentPage==='history'){
+        renderHistory();
+    }
+
+    if(currentPage==='stats'){
+        renderStats();
+    }
+}
+
+render();
 </script>
 </body>
 </html>
